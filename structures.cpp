@@ -7,12 +7,10 @@ int main()
 	for (int i = 1; i <= 10; ++i)
 		l.push_back(i);
 
-	l.print();
+	List<int> k(l);
+	k.print();
 
-	for (int i = 1; i <= 10; ++i) {
-		l.print();
-		l.pop_back();
-	}
+	
 	return 0;
 }
 
