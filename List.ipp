@@ -284,6 +284,8 @@ inline bool List<T>::iterator::operator!=(const iterator& other) const
 template<class T>
 inline typename List<T>::iterator& List<T>::iterator::operator++()
 {
+	if (ptr == nullptr) throw std::out_of_range("Reached the end of list");
+
 	ptr = ptr->next;
 	return *this;
 }
@@ -291,6 +293,8 @@ inline typename List<T>::iterator& List<T>::iterator::operator++()
 template<class T>
 inline typename List<T>::iterator List<T>::iterator::operator++(int)
 {
+	if (ptr == nullptr) throw std::out_of_range("Reached the end of list");
+
 	iterator rtrn(*this);
 	++(*this);
 	return rtrn;
@@ -299,13 +303,17 @@ inline typename List<T>::iterator List<T>::iterator::operator++(int)
 template<class T>
 inline typename List<T>::iterator& List<T>::iterator::operator--()
 {
-	ptr = ptr->next;
+	if (ptr == nullptr) throw std::out_of_range("Reached the beginning of list");
+
+	ptr = ptr->prev;
 	return *this;
 }
 
 template<class T>
 inline typename List<T>::iterator List<T>::iterator::operator--(int)
 {
+	if (ptr == nullptr) throw std::out_of_range("Reached the beginning of list");
+
 	iterator rtrn(*this);
 	--(*this);
 	return rtrn;
