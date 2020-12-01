@@ -1,5 +1,6 @@
 #include <iostream>
 #include "List.hpp"
+#include "Stack.hpp"
 
 void ListTest() {
 	List<int> list1;
@@ -28,10 +29,17 @@ void ListTest() {
 	std::cout << "Removed the seventh item: ";
 	list1.print();
 }
+void StackTest() {
+	Stack<int> stack;
+	for (int i = 1; i <= 10; ++i)
+		stack.push(i);
+
+	stack.print();
+}
 
 int main()
 {
-	ListTest();
+	StackTest();
 
 	
 	return 0;
