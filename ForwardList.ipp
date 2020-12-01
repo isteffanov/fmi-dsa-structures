@@ -171,7 +171,13 @@ inline const T& ForwardList<T>::iterator::operator*() const
 template<class T>
 inline T* ForwardList<T>::iterator::operator->()
 {
-	return *ptr;
+	return &(ptr->data);
+}
+
+template<class T>
+inline T* ForwardList<T>::iterator::operator->() const
+{
+	return &(ptr->data);
 }
 
 /* comparison operators */

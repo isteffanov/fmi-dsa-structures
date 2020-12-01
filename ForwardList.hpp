@@ -23,6 +23,7 @@ public:
 		T&			operator* ();
 		const T&	operator* () const;
 		T*			operator->();
+		T*			operator->() const;
 
 		bool		operator==(const iterator& other) const;
 		bool		operator!=(const iterator& other) const;
