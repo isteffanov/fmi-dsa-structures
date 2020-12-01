@@ -233,7 +233,7 @@ inline void List<T>::print() const
 
 	if (!empty()) {
 		for (iterator it = begin(); it != end(); ++it)
-			std::cout << *it << (it.ptr != tail ? " -> " : "");
+			std::cout << *it << (it.ptr != tail ? " <-> " : "");
 	}
 
 	std::cout << " ]" << std::endl;
