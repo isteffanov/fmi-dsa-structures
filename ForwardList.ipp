@@ -140,10 +140,12 @@ inline bool ForwardList<T>::empty() const
 template<class T>
 inline void ForwardList<T>::print()
 {
-	while (!empty()) {
-		std::cout << front() << " ";
-		pop_front();
-	}
+	std::cout << "[ ";
+
+	for (iterator it = begin(); it != end(); ++it)
+		std::cout << *it << (it.ptr != tail ? " -> " : "");
+
+	std::cout << " ]" << std::endl;
 }
 
 /* iterator constructor */
@@ -157,13 +159,13 @@ inline ForwardList<T>::iterator::iterator(Node* ptr_)
 template<class T>
 inline T& ForwardList<T>::iterator::operator*()
 {
-	return ptr;
+	return ptr->data;
 }
 
 template<class T>
 inline const T& ForwardList<T>::iterator::operator*() const
 {
-	return ptr;
+	return ptr->data;
 }
 
 template<class T>
