@@ -11,11 +11,35 @@ class ForwardList {
 			:data(data_), next(next_) {}
 	};
 
+public:
+	class iterator {
+		friend ForwardList;
+
+		Node* ptr;
+
+	public:
+		iterator(Node* ptr_);
+
+		T&			operator* ();
+		const T&	operator* () const;
+		T*			operator->();
+
+		bool		operator==(const iterator& other) const;
+		bool		operator!=(const iterator& other) const;
+
+		iterator&	operator++();
+		iterator	operator++(int);
+	};
+
+private:
 	Node* head;
 	Node* tail;
 
 public:
 	ForwardList();
+	ForwardList(const std::initializer_list<T>& il);
+	ForwardList(const ForwardList<T>& other);
+	ForwardList<T> operator=(const ForwardList<T>& other);
 	~ForwardList();
 
 	void push_front(const T& thing);
@@ -24,64 +48,17 @@ public:
 	T& front();
 	const T& front() const;
 
+	iterator insert_after(iterator& it, const T& thing);
+	iterator remove_after(const iterator& it);
+
+	iterator begin() const;
+	iterator end()   const;
+
+	void copy(const ForwardList<T>& other);
+	void clean();
+
 	bool empty() const;
 	void print();
 };
 
-template<class T>
-inline ForwardList<T>::ForwardList()
-	:head(nullptr), tail(nullptr) {}
-
-template<class T>
-inline ForwardList<T>::~ForwardList()
-{
-	while (!empty())
-		pop_front();
-}
-
-template<class T>
-inline void ForwardList<T>::push_front(const T& thing)
-{
-	if (empty()) {
-		head = new Node(thing, nullptr);
-		tail = head;
-	}
-	else head = new Node(thing, head);
-}
-
-template<class T>
-inline void ForwardList<T>::pop_front()
-{
-	if (empty()) throw std::logic_error("You tried to pop from empty list");
-
-	Node* temp = head;
-	head = head->next;
-	delete temp;
-}
-
-template<class T>
-inline T& ForwardList<T>::front()
-{
-	return head->data;
-}
-
-template<class T>
-inline const T& ForwardList<T>::front() const
-{
-	return const_cast<T&>(*this).front();
-}
-
-template<class T>
-inline bool ForwardList<T>::empty() const
-{
-	return head == nullptr;
-}
-
-template<class T>
-inline void ForwardList<T>::print()
-{
-	while (!empty()) {
-		std::cout << front() << " ";
-		pop_front();
-	}
-}
+#include "ForwardList.ipp"
