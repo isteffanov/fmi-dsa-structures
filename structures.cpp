@@ -3,6 +3,7 @@
 #include "Stack.hpp"
 #include "ForwardList.hpp"
 #include "CircularList.hpp"
+#include "Queue.hpp"
 
 void ListTest() {
 	List<int> list1;
@@ -31,13 +32,7 @@ void ListTest() {
 	std::cout << "Removed the seventh item: ";
 	list1.print();
 }
-void StackTest() {
-	Stack<int> stack;
-	for (int i = 1; i <= 10; ++i)
-		stack.push(i);
 
-	stack.print();
-}
 void FListTest() {
 	ForwardList<int> list1;
 	for(int i = 10; i >= 1; --i)
@@ -65,6 +60,7 @@ void FListTest() {
 	std::cout << "Removed the seventh item: ";
 	list1.print();
 }
+
 void CListTest() {
 	CircularList<int> list1;
 	for (int i = 1; i <= 10; ++i)
@@ -83,9 +79,26 @@ void CListTest() {
 	std::cout << "List 1 with removed elements: ";
 	list2.print();
 }
+
+void StackTest() {
+	Stack<int> stack;
+	for (int i = 1; i <= 10; ++i)
+		stack.push(i);
+
+	stack.print();
+}
+
+void QueueTest() {
+	Queue<int> queue;
+	for (int i = 1; i <= 10; ++i)
+		queue.enqueue(i);
+
+	queue.print();
+}
+
 int main()
 {
-	CListTest();
+	QueueTest();
 
 	
 	return 0;
