@@ -55,7 +55,7 @@ public:
 	iterator begin() const;
 	iterator end() const;
 
-	void copy();
+	void copy(const CircularList<T>& other);
 	void clean();
 
 	bool empty() const;

@@ -8,7 +8,7 @@ template<class T>
 inline CircularList<T>::CircularList(const CircularList<T>& other)
 	: CircularList<T>()
 {
-	copy();
+	copy(other);
 }
 
 template<class T>
@@ -116,7 +116,7 @@ inline typename CircularList<T>::iterator CircularList<T>::end() const
 }
 
 template<class T>
-inline void CircularList<T>::copy()
+inline void CircularList<T>::copy(const CircularList<T>& other)
 {
 	if (other.empty()) return;
 	try {
