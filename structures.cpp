@@ -2,6 +2,7 @@
 #include "List.hpp"
 #include "Stack.hpp"
 #include "ForwardList.hpp"
+#include "CircularList.hpp"
 
 void ListTest() {
 	List<int> list1;
@@ -64,9 +65,27 @@ void FListTest() {
 	std::cout << "Removed the seventh item: ";
 	list1.print();
 }
+void CListTest() {
+	CircularList<int> list1;
+	for (int i = 1; i <= 10; ++i)
+		list1.push(i);
+
+	std::cout << "List 1: ";
+	list1.print();
+
+	CircularList<int> list2(list1);
+
+	CircularList<int>::iterator it = list2.begin();
+	for (int i = 0; i < 5; ++i) {
+		list2.remove_after(it);
+	}
+	
+	std::cout << "List 1 with removed elements: ";
+	list2.print();
+}
 int main()
 {
-	FListTest();
+	CListTest();
 
 	
 	return 0;
