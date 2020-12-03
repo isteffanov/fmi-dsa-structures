@@ -184,6 +184,27 @@ inline const T& List<T>::back() const
 	return tail->data;
 }
 
+template<class T>
+inline void List<T>::reverse()
+{
+	Node* toBePrev = head->next;
+	Node* curr = head;
+
+	while (toBePrev) {
+		curr->next = curr->prev;
+		curr->prev = toBePrev;
+
+		toBePrev = toBePrev->next;
+		curr = curr->prev;
+	} 
+
+	tail = head;
+	head = curr;
+
+	head->next = head->prev;
+	head->prev = nullptr;
+}
+
 /* constructor helper methods */
 
 template<class T>
@@ -262,7 +283,7 @@ inline const T& List<T>::iterator::operator*() const
 template<class T>
 inline T* List<T>::iterator::operator->()
 {
-	return ptr;
+	return &(ptr->data);
 }
 
 /* comparison operators */

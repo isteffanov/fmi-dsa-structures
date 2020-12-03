@@ -62,6 +62,8 @@ public:
 	inline const T& front() const;
 	inline const T& back()	const;
 
+	void reverse();
+
 	void copy(const List<T>& other);
 	void clean();
 
