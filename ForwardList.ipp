@@ -110,6 +110,36 @@ inline typename ForwardList<T>::iterator ForwardList<T>::end() const
 }
 
 template<class T>
+inline typename ForwardList<T>::iterator ForwardList<T>::find(const T& thing)
+{
+	for (iterator it = begin(); it != end(); ++it)
+		if (*it == thing) return it;
+
+	return end();
+}
+
+template<class T>
+inline const T& ForwardList<T>::at(size_t pos)
+{
+	Node* ptr = head;
+	for (int i = 0; i < pos; ++i) {
+		if (ptr == nullptr) throw std::out_of_range("Forward list: You tried to access item out of the list");
+			ptr = ptr->next;
+	}
+
+	return ptr->data;
+}
+
+template<class T>
+inline void ForwardList<T>::append(ForwardList<T>& other)
+{
+	tail->next = other.head;
+	tail = other.tail;
+
+	other.head = nullptr;
+}
+
+template<class T>
 inline void ForwardList<T>::copy(const ForwardList<T>& other)
 {
 	head = new Node(other.head->data, nullptr);

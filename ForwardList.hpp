@@ -55,6 +55,12 @@ public:
 	iterator begin() const;
 	iterator end()   const;
 
+	iterator find(const T& thing);
+	const T& at(size_t pos);
+
+	void append(ForwardList<T>& other);
+//	void merge(ForwardList<T>& other);  <- TODO
+
 	void copy(const ForwardList<T>& other);
 	void clean();
 
