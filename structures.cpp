@@ -4,6 +4,7 @@
 #include "ForwardList.hpp"
 #include "CircularList.hpp"
 #include "Queue.hpp"
+#include "Tree.hpp"
 
 void ListTest() {
 	List<int> list1;
@@ -96,10 +97,22 @@ void QueueTest() {
 	queue.print();
 }
 
+void TreeTest() {
+	Tree<int> tree;
+
+	Tree<int>::Node* root = tree.add(5);
+	tree.add(4, root);
+
+	Tree<int>::Node* node10 = tree.add(10, root);
+	tree.add(2, node10);
+	tree.add(6, node10);
+
+	tree.remove(10);
+}
+
 int main()
 {
-	QueueTest();
-
+	TreeTest();
 	
 	return 0;
 }
