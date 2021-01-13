@@ -77,3 +77,19 @@ inline typename const Tree<T>::Node* Tree<T>::findWrapper(const T& data, const N
 	
 	if (start == root) return nullptr;
 }
+
+int main() {
+
+	Tree<int> tree;
+
+	Tree<int>::Node* root = tree.add(5);
+	tree.add(4, root);
+
+	Tree<int>::Node* node10 = tree.add(10, root);
+	tree.add(2, node10);
+	tree.add(6, node10);
+
+	tree.remove(node10);
+
+	return 0;
+}

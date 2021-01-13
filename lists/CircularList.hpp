@@ -1,4 +1,67 @@
-#include "CircularList.hpp"
+#pragma once
+#include <iostream>
+
+template <class T>
+class CircularList {
+
+	struct Node {
+		T data;
+		Node* next;
+
+		Node(T data_, Node* next_)
+			:data(data_), next(next_) {}
+	};
+
+public:
+	class iterator {
+
+		friend CircularList;
+		Node* ptr;
+	public:
+		iterator(Node* ptr_ = tail);
+
+		T& operator*();
+		const T& operator*() const;
+		T* operator->();
+		const T* operator->() const;
+
+		bool operator==(const iterator& other) const;
+		bool operator!=(const iterator& other) const;
+		
+		iterator& operator++();
+		iterator operator++(int);
+	};
+
+private:
+	Node* head;
+	Node* tail;
+	size_t size;
+
+public:
+	CircularList();
+	CircularList(const CircularList<T>& other);
+	CircularList<T> operator=(CircularList other);
+	~CircularList();
+
+	void push(const T& thing);
+	void pop();
+
+	iterator insert_after(const iterator& it, const T& thing);
+	iterator remove_after(iterator& it);
+
+	T& front();
+	const T& front() const;
+
+	iterator begin() const;
+	iterator end() const;
+
+	void copy(const CircularList<T>& other);
+	void clean();
+
+	bool empty() const;
+	void print() const;
+};
+
 
 template<class T>
 inline CircularList<T>::CircularList()
@@ -232,4 +295,26 @@ inline typename CircularList<T>::iterator CircularList<T>::iterator::operator++(
 	iterator rtrn(*this);
 	++(*this);
 	return rtrn;
+}
+
+int main() {
+
+	CircularList<int> list1;
+	for (int i = 1; i <= 10; ++i)
+		list1.push(i);
+
+	std::cout << "List 1: ";
+	list1.print();
+
+	CircularList<int> list2(list1);
+
+	CircularList<int>::iterator it = list2.begin();
+	for (int i = 0; i < 5; ++i) {
+		list2.remove_after(it);
+	}
+
+	std::cout << "List 1 with removed elements: ";
+	list2.print();
+
+	return 0;
 }

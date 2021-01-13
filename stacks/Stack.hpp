@@ -110,3 +110,14 @@ inline void Stack<T>::print()
 		pop();
 	}
 }
+
+int main() {
+
+	Stack<int> stack;
+	for (int i = 1; i <= 10; ++i)
+		stack.push(i);
+
+	stack.print();
+
+	return 0;
+}

@@ -1,4 +1,75 @@
-#include "List.hpp"
+#pragma once
+#include <iostream>
+
+template <class T>
+class List
+{
+	struct Node {
+		Node* prev;
+		T data;
+		Node* next;
+
+		Node(Node* prev_, T data_, Node* next_ = nullptr)
+			: prev(prev_), data(data_), next(next_) {}
+	};
+
+public:
+	class iterator {
+		friend List;
+
+		Node* ptr;
+
+	public:
+		iterator(Node* ptr_);
+
+		T&			operator*();
+		const T&	operator*() const;
+		T*			operator->();
+
+		bool operator==(const iterator& other) const;
+		bool operator!=(const iterator& other) const;
+
+		iterator& operator++();
+		iterator  operator++(int);
+		iterator& operator--();
+		iterator  operator--(int);
+	};
+private:
+
+	Node* head;
+	Node* tail;
+
+public:
+	List();
+	List(const std::initializer_list<T>& il);
+	List(const List<T>& other);
+	List<T>& operator=(const List<T>& other);
+	~List<T>();
+
+	void push_front(const T thing);
+	void push_back(const T thing);
+	void pop_front();
+	void pop_back();
+
+	iterator begin() const;
+	iterator end() const;
+
+	iterator insert(const iterator& it, const T& thing);
+	iterator remove(const iterator& it);
+
+	inline T& front();
+	inline T& back();
+	inline const T& front() const;
+	inline const T& back()	const;
+
+	void reverse();
+
+	void copy(const List<T>& other);
+	void clean();
+
+	bool empty() const;
+	void print() const;
+};
 
 template<class T>
 inline List<T>::List()
@@ -196,7 +267,7 @@ inline void List<T>::reverse()
 
 		toBePrev = toBePrev->next;
 		curr = curr->prev;
-	} 
+	}
 
 	tail = head;
 	head = curr;
@@ -338,4 +409,35 @@ inline typename List<T>::iterator List<T>::iterator::operator--(int)
 	iterator rtrn(*this);
 	--(*this);
 	return rtrn;
+}
+
+int main() {
+
+	List<int> list1;
+	for (int i = 1; i <= 10; ++i)
+		list1.push_back(i);
+
+	std::cout << "Filled via for loop: ";
+	list1.print();
+
+	List<int> list2 = { 11, 12, 13, 14, 15 };
+	std::cout << "Filled via initializer list: ";
+	list2.print();
+
+
+	List<int>::iterator it = list2.begin();
+	for (int i = 0; i < 2; ++i)
+		++it;
+	list2.insert(it, 20);
+	std::cout << "Inserted '20' in third place: ";
+	list2.print();
+
+	List<int>::iterator it1 = list1.begin();
+	for (int i = 1; i < 7; ++i)
+		++it1;
+	list1.remove(it1);
+	std::cout << "Removed the seventh item: ";
+	list1.print();
+
+	return 0;
 }

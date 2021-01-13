@@ -1,4 +1,72 @@
-#include "ForwardList.hpp"
+#pragma once
+
+template <class T>
+class ForwardList {
+
+	struct Node {
+		T data;
+		Node* next;
+
+		Node(T data_, Node* next_)
+			:data(data_), next(next_) {}
+	};
+
+public:
+	class iterator {
+		friend ForwardList;
+
+		Node* ptr;
+
+	public:
+		iterator(Node* ptr_);
+
+		T&			operator* ();
+		const T&	operator* () const;
+		T*			operator->();
+		T*			operator->() const;
+
+		bool		operator==(const iterator& other) const;
+		bool		operator!=(const iterator& other) const;
+
+		iterator&	operator++();
+		iterator	operator++(int);
+	};
+
+private:
+	Node* head;
+	Node* tail;
+
+public:
+	ForwardList();
+	ForwardList(const std::initializer_list<T>& il);
+	ForwardList(const ForwardList<T>& other);
+	ForwardList<T> operator=(const ForwardList<T>& other);
+	~ForwardList();
+
+	void push_front(const T& thing);
+	void pop_front();
+
+	T& front();
+	const T& front() const;
+
+	iterator insert_after(iterator& it, const T& thing);
+	iterator remove_after(const iterator& it);
+
+	iterator begin() const;
+	iterator end()   const;
+
+	iterator find(const T& thing);
+	const T& at(size_t pos);
+
+	void append(ForwardList<T>& other);
+//	void merge(ForwardList<T>& other);  <- TODO
+
+	void copy(const ForwardList<T>& other);
+	void clean();
+
+	bool empty() const;
+	void print();
+};
 
 template<class T>
 inline ForwardList<T>::ForwardList()
@@ -124,7 +192,7 @@ inline const T& ForwardList<T>::at(size_t pos)
 	Node* ptr = head;
 	for (int i = 0; i < pos; ++i) {
 		if (ptr == nullptr) throw std::out_of_range("Forward list: You tried to access item out of the list");
-			ptr = ptr->next;
+		ptr = ptr->next;
 	}
 
 	return ptr->data;
@@ -243,4 +311,35 @@ inline typename ForwardList<T>::iterator ForwardList<T>::iterator::operator++(in
 	iterator rtrn(*this);
 	++(*this);
 	return rtrn;
+}
+
+int main() {
+
+	ForwardList<int> list1;
+	for (int i = 10; i >= 1; --i)
+		list1.push_front(i);
+
+	std::cout << "Filled via for loop: ";
+	list1.print();
+
+	ForwardList<int> list2 = { 11, 12, 13, 14, 15 };
+	std::cout << "Filled via initializer list: ";
+	list2.print();
+
+
+	ForwardList<int>::iterator it = list2.begin();
+	for (int i = 0; i < 2; ++i)
+		++it;
+	list2.insert_after(it, 20);
+	std::cout << "Inserted '20' in third place: ";
+	list2.print();
+
+	ForwardList<int>::iterator it1 = list1.begin();
+	for (int i = 1; i < 7; ++i)
+		++it1;
+	list1.remove_after(it1);
+	std::cout << "Removed the seventh item: ";
+	list1.print();
+
+	return 0;
 }

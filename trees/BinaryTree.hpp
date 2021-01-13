@@ -9,12 +9,12 @@ class BinaryTree {
 		Node* rightChild;
 
 		Node(const T& _data)
-			:data(_data), leftChild(nullptr), rightChild(nullptr), bf(0) {}
+			:data(_data), leftChild(nullptr), rightChild(nullptr) {}
 	};
 
 	Node* root;
 
-	void addRecursive(const T& data, Node* start);
+	void addRecursive(const T& data, Node*& start);
 
 	Node* find(const T& data);
 	Node* findRecursive(const T& data, Node* start);
@@ -60,6 +60,7 @@ template<class T>
 inline void BinaryTree<T>::remove(const T& data)
 {
 	Node* toRemove = find(data);
+	if (!toRemove) return;
 
 	//there are no children
 	if (!toRemove->leftChild && !toRemove->rightChild) {
@@ -71,13 +72,13 @@ inline void BinaryTree<T>::remove(const T& data)
 		   || toRemove->leftChild && !toRemove->rightChild) {
 		Node* child = toRemove->leftChild ? toRemove->leftChild : toRemove->rightChild;
 
-		Node* tmp = toRemove;
+		toRemove->data = child->data;
 		tmp = child;
 		delete toRemove;
 	}
 	//there are two children
 	else {
-		Node* min = minRecursive(toRemove->right);
+		Node* min = minRecursive(toRemove->rightChild);
 		toRemove->data = min->data;
 		delete min;
 	}
@@ -96,7 +97,7 @@ inline const T& BinaryTree<T>::max() const
 }
 
 template<class T>
-inline void BinaryTree<T>::addRecursive(const T& data, Node* start)
+inline void BinaryTree<T>::addRecursive(const T& data, Node*& start)
 {
 	if (!start) {
 		start = new Node(data);
@@ -117,12 +118,13 @@ inline void BinaryTree<T>::addRecursive(const T& data, Node* start)
 template<class T>
 inline typename BinaryTree<T>::Node* BinaryTree<T>::find(const T& data)
 {
-	findRecursive(data, root);
+	return findRecursive(data, root);
 }
 
 template<class T>
 inline typename BinaryTree<T>::Node* BinaryTree<T>::findRecursive(const T& data, Node* start)
 {
+	if (!start) return nullptr;
 	if (data == start->data) return start;
 	else if (data < start->data) return findRecursive(data, start->leftChild);
 	else return findRecursive(data, start->rightChild);
@@ -142,4 +144,17 @@ inline typename BinaryTree<T>::Node* BinaryTree<T>::maxRecursive(Node* start)
 	if (!start) return start;
 
 	return start->rightChild;
+}
+
+int main() {
+
+	BinaryTree<int> tree;
+	tree.add(10);
+	tree.add(5);
+	tree.add(15);
+
+	tree.add(20);
+	tree.remove(15);
+
+	return 0;
 }

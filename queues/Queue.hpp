@@ -135,3 +135,14 @@ inline void Queue<T>::print()
 		if (!empty()) std::cout << " - ";
 	}
 }
+
+int main() {
+
+	Queue<int> queue;
+	for (int i = 1; i <= 10; ++i)
+		queue.enqueue(i);
+
+	queue.print();
+
+	return 0;
+}
