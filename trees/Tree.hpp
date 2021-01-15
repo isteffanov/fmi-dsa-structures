@@ -19,22 +19,6 @@ public:
 			:parent(_parent), data(_data), visited(false) {}
 	};
 
-private:
-	Node* root;
-
-	void	removeRecursive(Node* node);
-	void	removeConnecting(Node* node);
-	Node* findWrapper(const T& data, Node* start) const;
-
-	size_t	heightRecursive(Node* node) const;
-	size_t	widthRecursive(Node* node) const;
-	bool	balancedRecursive(Node* node) const;
-	size_t	weightRecursive(Node* node) const;
-	void	printLevelRecursive(size_t level, Node* node) const;
-
-	Node* bfs(const T& data, Node* start) const;
-	Node* dfs(const T& data, Node* start) const;
-
 public:
 	Tree();
 	Tree(const Tree& other) = delete;
@@ -52,6 +36,22 @@ public:
 
 	void		print() const;
 	void		printLevel(size_t level) const;
+
+private:
+	Node* root;
+
+	void	removeRecursive(Node* node);
+	void	removeConnecting(Node* node);
+	Node* findWrapper(const T& data, Node* start) const;
+
+	size_t	heightRecursive(Node* node) const;
+	size_t	widthRecursive(Node* node) const;
+	bool	balancedRecursive(Node* node) const;
+	size_t	weightRecursive(Node* node) const;
+	void	printLevelRecursive(size_t level, Node* node) const;
+
+	Node* bfs(const T& data, Node* start) const;
+	Node* dfs(const T& data, Node* start) const;
 };
 
 template<class T>
