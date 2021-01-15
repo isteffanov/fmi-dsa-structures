@@ -3,34 +3,40 @@
 template <class T>
 class BinaryTree {
 
+public:
 	struct Node {
 		T data;
-		Node* leftChild;
-		Node* rightChild;
+		Node* left;
+		Node* right;
 
-		Node(const T& _data)
-			:data(_data), leftChild(nullptr), rightChild(nullptr) {}
+		Node(const T& _data, Node* _left, Node* _right)
+			:data(_data), left(_left), right(_right) {}
 	};
-
-	Node* root;
-
-	void addRecursive(const T& data, Node*& start);
-
-	Node* find(const T& data);
-	Node* findRecursive(const T& data, Node* start);
-
-	Node* minRecursive(Node* start);
-	Node* maxRecursive(Node* start);
 
 public:
 	BinaryTree();
+	BinaryTree(const BinaryTree& other) = delete;
+	const BinaryTree& operator=(const BinaryTree& other) = delete;
 	~BinaryTree();
 
-	void add(const T& data);
-	void remove(const T& data);
+	const Node* add(const T& data,	Node* left = nullptr,
+									Node* right = nullptr);
+	void		remove(const T& data);
+	const Node* find(const T& data);
 
-	const T& min() const;
-	const T& max() const;
+	const T&	min() const;
+	const T&	max() const;
+
+	void		print() const;
+
+private:
+	Node* root;
+
+	Node* findRecursive(const T& data, Node* start);
+	Node* minRecursive(Node* start);
+	Node* maxRecursive(Node* start);
+
+	void printInOrder(Node* start);
 };
 
 
@@ -46,42 +52,23 @@ inline BinaryTree<T>::~BinaryTree()
 }
 
 template<class T>
-inline void BinaryTree<T>::add(const T& data)
+inline typename const BinaryTree<T>::Node*
+BinaryTree<T>::add(const T& data, Node* left, Node* right)
 {
-	try {
-		addRecursive(data, root);
-	}
-	catch (std::exception& e) {
-		std::cout << "BinaryTree: " << e.what();
-	}
+	return new Node(data, left, right);
 }
 
 template<class T>
 inline void BinaryTree<T>::remove(const T& data)
 {
-	Node* toRemove = find(data);
-	if (!toRemove) return;
+	//TODO
+}
 
-	//there are no children
-	if (!toRemove->leftChild && !toRemove->rightChild) {
-		delete toRemove;
-		toRemove = nullptr;
-	}
-	//there is only one child
-	else if (!toRemove->leftChild &&  toRemove->rightChild
-		   || toRemove->leftChild && !toRemove->rightChild) {
-		Node* child = toRemove->leftChild ? toRemove->leftChild : toRemove->rightChild;
-
-		toRemove->data = child->data;
-		tmp = child;
-		delete toRemove;
-	}
-	//there are two children
-	else {
-		Node* min = minRecursive(toRemove->rightChild);
-		toRemove->data = min->data;
-		delete min;
-	}
+template<class T>
+inline typename const BinaryTree<T>::Node*
+BinaryTree<T>::find(const T& data)
+{
+	return findRecursive(data, root);
 }
 
 template<class T>
@@ -97,34 +84,16 @@ inline const T& BinaryTree<T>::max() const
 }
 
 template<class T>
-inline void BinaryTree<T>::addRecursive(const T& data, Node*& start)
+inline void BinaryTree<T>::print() const
 {
-	if (!start) {
-		start = new Node(data);
-		return;
-	}
-
-	if (data == start->data)
-		throw std::logic_error("You tried to insert dublicate elements, that would break the structure!");
-
-	else if (data < start->data)
-		return addRecursive(data, start->leftChild);
-
-	else 
-		return addRecursive(data, start->rightChild);
-
-}
-
-template<class T>
-inline typename BinaryTree<T>::Node* BinaryTree<T>::find(const T& data)
-{
-	return findRecursive(data, root);
+	printInOrder(root);
 }
 
 template<class T>
 inline typename BinaryTree<T>::Node* BinaryTree<T>::findRecursive(const T& data, Node* start)
 {
 	if (!start) return nullptr;
+
 	if (data == start->data) return start;
 	else if (data < start->data) return findRecursive(data, start->leftChild);
 	else return findRecursive(data, start->rightChild);
@@ -146,15 +115,39 @@ inline typename BinaryTree<T>::Node* BinaryTree<T>::maxRecursive(Node* start)
 	return start->rightChild;
 }
 
+template<class T>
+inline void BinaryTree<T>::printInOrder(Node* start)
+{
+	if (!start) return;
+
+	printInOrder(start->left);
+	std::cout << start->data << " ";
+	printInOrder(start->right);
+}
+
 int main() {
+	using node = BinaryTree<int>::Node;
 
 	BinaryTree<int> tree;
-	tree.add(10);
-	tree.add(5);
-	tree.add(15);
+	tree.add(10,
+		new node(5,
+			nullptr,
+			nullptr),
+		new node(30,
+			new node(7,
+				nullptr,
+				nullptr),
+			new node(200,
+				nullptr,
+				new node(4,
+					nullptr,
+					nullptr)
+			)
+		)
+	);
 
-	tree.add(20);
-	tree.remove(15);
+
 
 	return 0;
 }
+
